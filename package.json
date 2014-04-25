@@ -1,0 +1,37 @@
+{
+  "name": "peggy",
+  "version": "1.0.0",
+  "description": "Playing with pegjs",
+  "private": true,
+  "bin": {
+    "peggy": "./bin/peggy"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "author": {
+    "name": "Andreas Kollegger",
+    "email": "akollegger@gmail.com",
+    "url": "https://github.com/akollegger"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akollegger/peggy"
+  },
+  "license": "MIT",
+  "bugs": "https://github.com/akollegger/peggy/issues",
+  "dependencies": {
+    "autocmdr": "~0.0.4",
+    "commander": "~2.0.0",
+    "lodash": "^2.4.1",
+    "requireindex": "^1.1.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "grunt-contrib-clean": "^0.5.0",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-peg": "^1.3.0",
+    "jshint-stylish": "^0.1.5",
+    "load-grunt-tasks": "^0.4.0"
+  }
+}
