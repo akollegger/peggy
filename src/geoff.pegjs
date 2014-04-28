@@ -8,6 +8,13 @@ Nodes:
 (dog:Animal {"name":"dog"})  // a node with both label and property 
 (dinner:Spam:Egg:Chips {"foo":"bar","answer":42})  // several of each 
 
+Relationships:
+(alice)-[:KNOWS]->(bob)
+(alice)-[:KNOWS {"since":1999}]->(bob)
+(alice)<-[:KNOWS {"since":1999}]-(bob)
+(alice)<-[:KNOWS {"since":1999}]->(bob)
+
+
 */
 
 {
@@ -45,15 +52,42 @@ Nodes:
 
 }
 
-/* ===== Nodes ===== */
+/* ===== Geoff Graph ===== */
+
+Graph
+  = paths:(p:Path _ { return p; })* { return paths; }
+
+Path
+  = first:Node relationship:Relationship* { return flatten([ first, relationship ]); }
 
 Node
-  = "(" nodeid:Identifier properties:JSobject? ")" { return nodeid; }
+  = "(" nodeid:Identifier labels:Label* properties:JSobject? ")" { return { id:nodeid, labels:labels, properties:properties }; }
+
+Relationship
+  = backward:"<"? "-" relData:RelationshipData "-" forward:">"? path:Path { 
+    var direction = "forward";
+    if (backward) {
+      if (forward) {
+        direction = "both";
+      } else {
+        direction = "backward";
+      }
+    }
+    relData.direction = direction;
+    return [relData, path]; 
+  }
+
+RelationshipData
+  = "[" nodeid:Identifier? type:Label properties:JSobject? "]" { return { id:nodeid, type:type, properties:properties }; }
+
+Label
+  = ":" id:Identifier { return id; }
 
 Identifier
   = [a-zA-Z0-9]+ { return text(); }
 
-/* ===== JSON ===== */
+
+/* ===== Geoff Variation of JSON ===== */
 
 /* ----- 2. JSON Grammar ----- */
 

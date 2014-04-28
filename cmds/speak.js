@@ -3,6 +3,7 @@
 
 var parsers = require('../lib');
 var _ = require('lodash');
+var chalk = require('chalk');
 
 if (typeof String.prototype.startsWith != 'function') {
   String.prototype.startsWith = function (str){
@@ -18,7 +19,7 @@ if (typeof String.prototype.endsWith != 'function') {
 
 module.exports = function(program) {
 
-  function peggyRepl(/* args? */) {
+  function peggyRepl(arg) {
 
     var readline = require('readline')
       , rl;
@@ -34,7 +35,7 @@ module.exports = function(program) {
       if (_.has(parsers, grammar)) {
         currentParser.name = grammar;
         currentParser.parser = parsers[currentParser.name];
-        rl.setPrompt(grammar + "? ");
+        rl.setPrompt(grammar + chalk.green("?") + " ", grammar.length + 2);
       } else {
         console.log("Peggy doesn't know how to speak " + grammar);
       }
@@ -52,6 +53,10 @@ module.exports = function(program) {
     rl = readline.createInterface(process.stdin, process.stdout, null);
 
     speak(Object.keys(parsers)[0]);
+
+    if (arg) {
+      speak(arg);
+    }
 
     rl.on('line', function(line) {
       if (line === ':quit') {
